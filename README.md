@@ -125,3 +125,5 @@ All tests run against the real database with proper authentication simulation.
 - **Database**: PostgreSQL
 - **Authentication**: Clerk
 - **Testing**: Vitest
+
+test
