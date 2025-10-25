@@ -1,5 +1,5 @@
 {
-  "name": "examples-trpc-next-prisma-starter",
+  "name": "twitter-clone",
   "private": true,
   "scripts": {
     "generate": "prisma generate",
@@ -17,10 +17,15 @@
     "lint-fix": "pnpm lint --fix",
     "migrate-dev": "prisma migrate dev",
     "migrate": "prisma migrate deploy",
+    "test:db:up": "docker compose -f docker-compose.test.yml up -d",
+    "test:db:down": "docker compose -f docker-compose.test.yml down -v",
+    "test:db:wait": "sleep 2",
+    "test:db:migrate": "dotenv -e .env.test -- prisma migrate deploy",
+    "test": "run-s test:db:up test:db:wait test:db:migrate && dotenv -e .env.test -- vitest run",
+    "test:watch": "run-s test:db:up test:db:wait test:db:migrate && dotenv -e .env.test -- vitest",
     "test-unit": "vitest",
-    "test-e2e": "playwright test",
     "test-start": "run-s test-unit test-e2e",
-    "postinstall": "pnpm generate",
+    "postinstall": "prisma generate",
     "typecheck": "tsc --noEmit"
   },
   "prisma": {
@@ -32,7 +37,8 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@prisma/client": "^6.7.0",
+    "@clerk/nextjs": "^6.34.0",
+    "@prisma/client": "6.18.0",
     "@tanstack/react-query": "^5.80.3",
     "@trpc/client": "npm:@trpc/client",
     "@trpc/next": "npm:@trpc/next",
@@ -51,6 +57,7 @@
     "@types/react": "^19.1.0",
     "autoprefixer": "^10.4.7",
     "dotenv": "^16.0.1",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^9.26.0",
     "eslint-config-next": "^15.3.1",
     "eslint-plugin-react": "^7.37.5",
@@ -59,7 +66,6 @@
     "postcss": "^8.4.39",
     "prettier": "^3.3.3",
     "prisma": "^6.7.0",
-    "start-server-and-test": "^1.12.0",
     "tailwindcss": "^3.4.6",
     "tsx": "^4.19.3",
     "typescript": "^5.9.2",
@@ -69,6 +75,5 @@
   },
   "publishConfig": {
     "access": "restricted"
-  },
-  "version": "11.6.0"
+  }
 }

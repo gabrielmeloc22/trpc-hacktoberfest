@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
@@ -10,14 +7,55 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id    String @id @default(uuid())
-  title String
-  text  String
-
-  // To return `Date`s intact through the API we use transformers
-  // https://trpc.io/docs/v11/data-transformers
-  // This is unique so it can be used for cursor-based pagination
+model User {
+  id        String   @id @default(uuid())
+  clerkId   String   @unique
+  username  String?
+  name      String?
+  imageUrl  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  posts   Post[]
+  likes   Like[]
+  replies Reply[]
 }
+
+model Post {
+  id     String @id @default(uuid())
+  text   String
+  userId String
+
+  author User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  likes   Like[]
+  replies Reply[]
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+}
+
+model Reply {
+  id        String   @id @default(uuid())
+  text      String
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
