@@ -7,8 +7,11 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <>
       <Head>
-        <title>Prisma Starter</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Chirp</title>
+        <meta
+          name="description"
+          content="A Twitter-like social media platform built with Next.js, tRPC, and Prisma"
+        />
       </Head>
 
       <main className="h-screen">{children}</main>

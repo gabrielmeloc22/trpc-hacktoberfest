@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: api
+      POSTGRES_PASSWORD: '123456'
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U root -d api']
+      interval: 5s
+      timeout: 5s
+      retries: 5
