@@ -6,8 +6,31 @@ export const likeRouter = router({
   toggle: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      // Crie um novo like associado ao post
-      // Caso já exista um like associado ao post, remova ele!
+      const { postId } = input;
+      const userId = ctx.userId;
+
+      // Usa transação para garantir consistência em casos concorrentes
+      const result = await prisma.$transaction(async (tx) => {
+        const existing = await tx.like.findUnique({
+          where: {
+            userId_postId: { userId, postId },
+          },
+        });
+
+        if (existing) {
+          await tx.like.delete({
+            where: { userId_postId: { userId, postId } },
+          });
+          return { liked: false };
+        }
+
+        await tx.like.create({
+          data: { userId, postId },
+        });
+        return { liked: true };
+      });
+
+      return result;
     }),
 
   byPost: protectedProcedure
