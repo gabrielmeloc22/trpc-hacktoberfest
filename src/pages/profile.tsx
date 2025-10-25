@@ -131,9 +131,9 @@ const ProfilePage: NextPageWithLayout = () => {
                     </Link>
                     <div className="mt-3 flex gap-6 text-sm">
                       <button
-                        onClick={() =>
+                        onClick={() => {
                           // Chame a mutation aqui passando o postId
-                        }
+                        }}
                         className="flex items-center gap-1 text-gray-400 hover:text-red-500 disabled:cursor-not-allowed"
                       >
                         <span>🤍</span>
