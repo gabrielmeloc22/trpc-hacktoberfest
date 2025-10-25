@@ -5,7 +5,10 @@ import { prisma } from '~/server/prisma';
 export const likeRouter = router({
   toggle: protectedProcedure
     .input(z.object({ postId: z.string() }))
-    .mutation(async ({ input, ctx }) => {}),
+    .mutation(async ({ input, ctx }) => {
+      // Crie um novo like associado ao post
+      // Caso já exista um like associado ao post, remova ele!
+    }),
 
   byPost: protectedProcedure
     .input(z.object({ postId: z.string() }))

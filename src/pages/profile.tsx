@@ -20,6 +20,9 @@ const ProfilePage: NextPageWithLayout = () => {
     },
   );
 
+  // Implemente a lógica da mutation
+  // const toggleLike = trpc.like.toggle.useMutation()
+
   const deletePost = trpc.post.delete.useMutation({
     async onMutate({ id }) {
       await utils.post.myPosts.cancel();
@@ -127,7 +130,12 @@ const ProfilePage: NextPageWithLayout = () => {
                       <p className="text-gray-300">{post.text}</p>
                     </Link>
                     <div className="mt-3 flex gap-6 text-sm">
-                      <button className="flex items-center gap-1 text-gray-400 hover:text-red-500 disabled:cursor-not-allowed">
+                      <button
+                        onClick={() =>
+                          // Chame a mutation aqui passando o postId
+                        }
+                        className="flex items-center gap-1 text-gray-400 hover:text-red-500 disabled:cursor-not-allowed"
+                      >
                         <span>🤍</span>
                         <span>{post._count.likes}</span>
                       </button>
